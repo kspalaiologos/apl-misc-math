@@ -1,24 +1,27 @@
 
 ⍝ apl-misc-math  -  Copyright (C) Kamila Szewczyk, 2022.
 ⍝ Redistributed under the terms of the AGPLv3 license.
-⍝ Load using: ⎕fix'file:///.../apl-misc-math/mm.apl'
+⍝ Load using: ⎕fix'file:///.../apl-misc-math/mm.apl'⋄mm.setup
 
 ⍝ Special thanks to Adám Brudzewsky.
 
 :Namespace mm
-    ⍝ Default settings. The library works optimally with
-    ⍝ higher precision arithmetic. Braces were supposed
-    ⍝ to make the result shy, but apparently they don't.
-    ∇ {r}←setup
-        (⎕FR⎕PP)⊢←1287 34
-        'ok'
-    ∇
-
     ⍝ Alter to change the precision of operations.
     ⍝ Note: A value too small will carry more error due to
     ⍝       floating point inaccurancy.
     epsilon←0.0000001
     int_prec←0.0001
+    (tanh_sinh_pf tanh_sinh_m2)←⍬ ⍬    ⍝ To be computed by setup.
+    
+    ⍝ Default settings. The library works optimally with
+    ⍝ higher precision arithmetic. Braces were supposed
+    ⍝ to make the result shy, but apparently they don't.
+    ∇ {r}←setup
+        (⎕FR⎕PP)⊢←1287 34
+        (tanh_sinh_pf tanh_sinh_m2)←↓(○.5)×5 6∘.○int_prec×⍳÷int_prec
+        tanh_sinh_m2×←int_prec
+        'ok'
+    ∇
 
     ⍝ d⍺⍺/dx |x=⍵
     derv←{epsilon÷⍨-/⍺⍺¨⍵+epsilon 0}
@@ -100,13 +103,12 @@
     ⍝ The tanh-sinh quadrature.
     tanh_sinh←{
         int←{
-            (pf m2)←↓(○.5)×5 6∘.○⍵⍵×⍳÷⍵⍵
-            (xk wkd)←↓7 6∘.○pf
-            +/((⍵⍵×m2)÷×⍨wkd)×⍺⍺¨xk
+            (xk wkd)←↓7 6∘.○tanh_sinh_pf
+            +/(tanh_sinh_m2÷×⍨wkd)×⍺⍺¨xk
         }
-        ⍺>⍵:-⍵(⍺⍺∇∇⍵⍵)⍺
-        ⍺ ⍵≡0 1:⍺(⍺⍺ int ⍵⍵)⍵
+        ⍺>⍵:-⍵(⍺⍺∇∇)⍺
+        ⍺ ⍵≡0 1:⍺(⍺⍺ int)⍵
         a b←⍺ ⍵⋄g←⍺⍺
-        (b-a)×0({g a+⍵×b-a} int ⍵⍵)1
+        (b-a)×0({g a+⍵×b-a} int)1
     }
 :EndNamespace
