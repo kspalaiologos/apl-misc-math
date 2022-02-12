@@ -110,4 +110,9 @@
         a b←⍺ ⍵⋄g←⍺⍺
         (b-a)×+/tanh_sinh_m2×{g a+⍵×b-a}¨tanh_xk
     }
+
+    ⍝ Some APLCart stuff I dislike grabbing over and over again.
+    median←2÷⍨1⊥⊢⌷⍨∘⊂⍋⌷⍨∘⊂∘⌈2÷⍨0 1+≢
+    stddev←≢÷⍨2*∘÷⍨(≢×+.*∘2)-2*⍨+⌿
+    diag←{⍵⊂⍤⊢⌸⍥,⍨+/↑⍳⍴⍵} ⍝ Antidiagonals as a vector of vectors.
 :EndNamespace
