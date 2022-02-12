@@ -12,6 +12,7 @@
     epsilon←0.0000001
     int_prec←0.0001
     (tanh_sinh_pf tanh_sinh_m2)←⍬ ⍬    ⍝ To be computed by setup.
+    (tanh_xk tanh_wkd)←⍬ ⍬
     
     ⍝ Default settings. The library works optimally with
     ⍝ higher precision arithmetic. Braces were supposed
@@ -20,6 +21,8 @@
         (⎕FR⎕PP)⊢←1287 34
         (tanh_sinh_pf tanh_sinh_m2)←↓(○.5)×5 6∘.○int_prec×⍳÷int_prec
         tanh_sinh_m2×←int_prec
+        (tanh_xk tanh_wkd)←↓7 6∘.○tanh_sinh_pf
+        tanh_sinh_m2÷←×⍨tanh_wkd
         'ok'
     ∇
 
@@ -102,13 +105,9 @@
 
     ⍝ The tanh-sinh quadrature.
     tanh_sinh←{
-        int←{
-            (xk wkd)←↓7 6∘.○tanh_sinh_pf
-            +/(tanh_sinh_m2÷×⍨wkd)×⍺⍺¨xk
-        }
         ⍺>⍵:-⍵(⍺⍺∇∇)⍺
-        ⍺ ⍵≡0 1:⍺(⍺⍺ int)⍵
+        ⍺ ⍵≡0 1:+/tanh_sinh_m2×⍺⍺¨tanh_xk
         a b←⍺ ⍵⋄g←⍺⍺
-        (b-a)×0({g a+⍵×b-a} int)1
+        (b-a)×+/tanh_sinh_m2×{g a+⍵×b-a}¨tanh_xk
     }
 :EndNamespace
