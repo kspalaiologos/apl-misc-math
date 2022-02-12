@@ -6,23 +6,27 @@
 ⍝ Special thanks to Adám Brudzewsky.
 
 :Namespace mm
+    ⍝ Default settings. The library works optimally with
+    ⍝ higher precision arithmetic.
+    (⎕FR⎕PP)←1287 34
+
     ⍝ Alter to change the precision of operations.
     ⍝ Note: A value too small will carry more error due to
     ⍝       floating point inaccurancy.
     epsilon←0.0000001
     int_prec←0.0001
-    (tanh_sinh_pf tanh_sinh_m2)←⍬ ⍬    ⍝ To be computed by setup.
-    (tanh_xk tanh_wkd)←⍬ ⍬
+    tanh_sinh_pf tanh_sinh_m2←⍬ ⍬    ⍝ To be computed by setup.
+    tanh_xk tanh_wkd←⍬ ⍬
+    erf_c euler_gamma←0 0
     
-    ⍝ Default settings. The library works optimally with
-    ⍝ higher precision arithmetic. Braces were supposed
-    ⍝ to make the result shy, but apparently they don't.
+    ⍝ Braces were supposed to make the result shy, but apparently they don't.
     ∇ {r}←setup
-        (⎕FR⎕PP)⊢←1287 34
         (tanh_sinh_pf tanh_sinh_m2)←↓(○.5)×5 6∘.○int_prec×⍳÷int_prec
         tanh_sinh_m2×←int_prec
         (tanh_xk tanh_wkd)←↓7 6∘.○tanh_sinh_pf
         tanh_sinh_m2÷←×⍨tanh_wkd
+        erf_c←2÷(○1)*.5
+        euler_gamma←(+/∘÷∘⍳-⍟) lim_inf 1
         'ok'
     ∇
 
@@ -132,5 +136,8 @@
     O1←⊢               ⍝ O(1)
 
     ⍝ A primitive approximation of limits at infinity.
-    lim_inf←{0::⍺⍺ ⍵⋄x←⍺⍺¨ 0 1+⍵⋄≠/x:⍺⍺∇∇(1+⍵)⋄⊃x} 
+    lim_inf←{0::⍺⍺ ⍵⋄x←⍺⍺¨ 0 1+⍵⋄epsilon<|-/x:⍺⍺∇∇(1+⍵)⋄⊃x} 
+
+    ⍝ The error function.
+    erf←{ev×0(*∘-×⍨)simpson⍵}
 :EndNamespace
