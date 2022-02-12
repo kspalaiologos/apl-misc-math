@@ -140,5 +140,18 @@
 
     ⍝ The sine integrals.
     Si←{0 (1∘○÷⊢)simpson ⍵}
-    si←{}
+    si←{(mm.Si ⍵)-○.5}
+
+    ⍝ The cosine integrals.
+    Cin←{0 {⍵÷⍨1-2○⍵}simpson ⍵}
+    Ci←{mm.euler_gamma + (⍟-mm.Cin)⍵}
+
+    ⍝ Offset logarithmic integral.
+    Li←{2 (÷∘⍟)mm.simpson ⍵}
+
+    ⍝ Partial derivatives.
+    invariant_a←{⍵⍵ ⍺⍺ ⍵}
+    invariant_b←{⍵ ⍺⍺ ⍵⍵}
+    pderv_a←{epsilon÷⍨-/(⍺⍺ invariant_b ⍵)¨⍺+epsilon 0} ⍝ Partial derivative df/d⍺
+    pderv_b←{epsilon÷⍨-/(⍺⍺ invariant_a ⍺)¨⍵+epsilon 0} ⍝ Partial derivative df/d⍵
 :EndNamespace
