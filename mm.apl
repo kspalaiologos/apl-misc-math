@@ -1,4 +1,10 @@
 
+⍝ apl-misc-math  -  Copyright (C) Kamila Szewczyk, 2022.
+⍝ Redistributed under the terms of the AGPLv3 license.
+⍝ Load using: ⎕fix'file:///.../apl-misc-math/mm.apl'
+
+⍝ Special thanks to Adám Brudzewsky.
+
 :Namespace mm
     ⍝ Default settings. The library works optimally with
     ⍝ higher precision arithmetic. Braces were supposed
