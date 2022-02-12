@@ -21,4 +21,7 @@
 
     ⍝ d⍺⍺/dx |x=⍵
     derv←{epsilon÷⍨-/⍺⍺¨⍵+epsilon 0}
+
+    ⍝ d^n⍺⍺/dx^n |x=⍵
+    nderv←{⍵⍵=1:⍺⍺ D ⍵ ⋄ ((⍺⍺ D) ∇∇ (⍵⍵-1)) ⍵}
 :EndNamespace
