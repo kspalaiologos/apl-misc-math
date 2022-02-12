@@ -18,6 +18,7 @@
     ⍝ Note: A value too small will carry more error due to
     ⍝       floating point inaccurancy.
     epsilon←0.0000001
+    int_prec←0.0001
 
     ⍝ d⍺⍺/dx |x=⍵
     derv←{epsilon÷⍨-/⍺⍺¨⍵+epsilon 0}
@@ -59,7 +60,7 @@
     ⍝ An extension to the Faddeev-LeVerrier implementation above that
     ⍝ also keeps track of the matrix used to compute the inverse.
     ⍝ The inverse can be obtained using inv cpoly←... and inv×-÷⊃⌽cpoly
-    faddeev_leverrier←{
+    faddeev_leverrier_ex←{
         ⎕io←0⋄(≠/⍴⍵)∨2≠≢⍴⍵:⍬⋄n←≢⍵⋄inv←⍬
         M0←⍵⋄I←n n⍴1↑⍨1+n⋄cpoly←⊃ {
             ⍵=0:1 I⋄(cp MP)←∇⍵-1⋄X←M0+.×MP
@@ -76,5 +77,23 @@
         ⎕io←0⋄(≠/⍴⍵)∨2≠≢⍴⍵:⍬
         n←≢⍵⋄I←n n⍴1↑⍨1+n⋄s←⍵-⍺×I
         q←1,⍨1↑⍨1-⍨⊃⌽⍴s⋄ztrim¨1,⍨∊⌹⍨∘-/q⊂1↓s
+    }
+
+    ⍝ A range function from dfns.
+    range←{↑+/⍵{⍵×{⍵-⎕IO}⍳1+0⌈⌊(⍺⍺-⍺)÷⍵+⍵=0}\1 ¯1×-\2↑⍺,⍺+×⍵-⍺}
+
+    ⍝ Simpson integration. Assumes bounds ⍺<⍵.
+    simpson←{
+        h←(⍵-⍺)÷S←÷int_prec
+        (h÷3)×+/(⍺+⍥⍺⍺ ⍵),⍺((⍺⍺⊣+h×⊢)×2×1+2|⊢⍤0)⍳S
+    }
+
+    ⍝ Trapezoidal rule.
+    trapz←{
+        ⍺=⍵:0
+        sgn←¯1*⍺>⍵
+        a b←⍺(⌊,⌈)⍵
+        x←↑2,/(a+0 int_prec)range b
+        sgn×+/0.5×int_prec×+/⍺⍺⍤0⊢x
     }
 :EndNamespace
