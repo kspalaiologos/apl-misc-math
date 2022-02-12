@@ -118,7 +118,7 @@
 
     ⍝ Partition a n-element index array according to an invertible
     ⍝ complexity function.
-    part_f←{⌽⌽¨(⌽⍳⍵)⊂⍨⍸⍣¯1⍺⍺⍳⌊⍺⍺⍣¯1⊢⍵}
+    part_f←{⌽⌽¨(⌽⍳⍵)⊂⍨⍸⍣¯1⌊⍺⍺⍳⌊⍺⍺⍣¯1⊢⍵}
 
     ⍝ Complexity functions. Used in the partitioning algoithm,
     ⍝ they include an additional n factor.
