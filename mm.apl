@@ -115,4 +115,19 @@
     median←2÷⍨1⊥⊢⌷⍨∘⊂⍋⌷⍨∘⊂∘⌈2÷⍨0 1+≢
     stddev←≢÷⍨2*∘÷⍨(≢×+.*∘2)-2*⍨+⌿
     diag←{⍵⊂⍤⊢⌸⍥,⍨+/↑⍳⍴⍵} ⍝ Antidiagonals as a vector of vectors.
+
+    ⍝ Partition a n-element index array according to an invertible
+    ⍝ complexity function.
+    part_f←{⌽⌽¨(⌽⍳⍵)⊂⍨⍸⍣¯1⍺⍺⍳⌊⍺⍺⍣¯1⊢⍵}
+
+    ⍝ Complexity functions. Used in the partitioning algoithm,
+    ⍝ they include an additional n factor.
+    Onbang←⊢×!         ⍝ O(n!)
+    Onlogn←×⍨×⍟        ⍝ O(n log n)
+    Ologn←⊢×⍟          ⍝ O(log n)
+    Osqrtn←⊢×(.5*⍨⊢)   ⍝ O(sqrt(n))
+    On3←⊢*∘4           ⍝ O(n^3)
+    On2←⊢*∘3           ⍝ O(n^2)
+    On←×⍨              ⍝ O(n)
+    O1←⊢               ⍝ O(1)
 :EndNamespace
