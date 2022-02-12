@@ -8,24 +8,21 @@
 :Namespace mm
     ⍝ Default settings. The library works optimally with
     ⍝ higher precision arithmetic.
-    (⎕FR⎕PP)←1287 34
+    ##.(⎕FR⎕PP)←1287 34
 
     ⍝ Alter to change the precision of operations.
     ⍝ Note: A value too small will carry more error due to
     ⍝       floating point inaccurancy.
     epsilon←0.0000001
     int_prec←0.0001
-    tanh_sinh_pf tanh_sinh_m2←⍬ ⍬    ⍝ To be computed by setup.
-    tanh_xk tanh_wkd←⍬ ⍬
-    erf_c euler_gamma←0 0
-    
+
     ⍝ Braces were supposed to make the result shy, but apparently they don't.
     ∇ {r}←setup
-        (tanh_sinh_pf tanh_sinh_m2)←↓(○.5)×5 6∘.○int_prec×⍳÷int_prec
-        tanh_sinh_m2×←int_prec
-        (tanh_xk tanh_wkd)←↓7 6∘.○tanh_sinh_pf
-        tanh_sinh_m2÷←×⍨tanh_wkd
-        erf_c←2÷(○1)*.5
+        (_tanh_sinh_pf _tanh_sinh_m2)←↓(○.5)×5 6∘.○int_prec×⍳÷int_prec
+        _tanh_sinh_m2×←int_prec
+        (_tanh_xk _tanh_wkd)←↓7 6∘.○_tanh_sinh_pf
+        _tanh_sinh_m2÷←×⍨_tanh_wkd
+        _erf_c←2÷(○1)*.5
         euler_gamma←(+/∘÷∘⍳-⍟) lim_inf 1
         'ok'
     ∇
@@ -110,9 +107,9 @@
     ⍝ The tanh-sinh quadrature.
     tanh_sinh←{
         ⍺>⍵:-⍵(⍺⍺∇∇)⍺
-        ⍺ ⍵≡0 1:+/tanh_sinh_m2×⍺⍺¨tanh_xk
+        ⍺ ⍵≡0 1:+/_tanh_sinh_m2×⍺⍺¨_tanh_xk
         a b←⍺ ⍵⋄g←⍺⍺
-        (b-a)×+/tanh_sinh_m2×{g a+⍵×b-a}¨tanh_xk
+        (b-a)×+/_tanh_sinh_m2×{g a+⍵×b-a}¨_tanh_xk
     }
 
     ⍝ Some APLCart stuff I dislike grabbing over and over again.
@@ -139,5 +136,5 @@
     lim_inf←{0::⍺⍺ ⍵⋄x←⍺⍺¨ 0 1+⍵⋄epsilon<|-/x:⍺⍺∇∇(1+⍵)⋄⊃x} 
 
     ⍝ The error function.
-    erf←{ev×0(*∘-×⍨)simpson⍵}
+    erf←{_erf_c×0(*∘-×⍨)simpson⍵}
 :EndNamespace
