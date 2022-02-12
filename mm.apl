@@ -130,4 +130,7 @@
     On2←⊢*∘3           ⍝ O(n^2)
     On←×⍨              ⍝ O(n)
     O1←⊢               ⍝ O(1)
+
+    ⍝ A primitive approximation of limits at infinity.
+    lim_inf←{0::⍺⍺ ⍵⋄x←⍺⍺¨ 0 1+⍵⋄≠/x:⍺⍺∇∇(1+⍵)⋄⊃x} 
 :EndNamespace
