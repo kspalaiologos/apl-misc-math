@@ -34,7 +34,7 @@
     }
 
     ⍝ Trim insignificant real/imaginary parts.
-    ztrim←{+/¯9 ¯11○(⊢×epsilon<|)9 11○⍵}
+    ztrim←{¯9 ¯11+.○(⊢×epsilon<|)9 11∘.○⍵}
 
     ⍝ Durand-Kerner method for finding complex polynomial roots.
     ⍝ 0.4J0.9 was chosen arbitrarily as a starting point. It is
@@ -75,7 +75,6 @@
     eigenvec←{
         ⎕io←0⋄(≠/⍴⍵)∨2≠≢⍴⍵:⍬
         n←≢⍵⋄I←n n⍴1↑⍨1+n⋄s←⍵-⍺×I
-        N←{¯9 ¯11+.○(⊢×⎕ct<|)9 11∘.○⍵}
-        q←1,⍨1↑⍨1-⍨⊃⌽⍴s⋄N¨1,⍨∊⌹⍨∘-/q⊂1↓s
+        q←1,⍨1↑⍨1-⍨⊃⌽⍴s⋄ztrim¨1,⍨∊⌹⍨∘-/q⊂1↓s
     }
 :EndNamespace
