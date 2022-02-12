@@ -96,4 +96,16 @@
         x←↑2,/(a+0 int_prec)range b
         sgn×+/0.5×int_prec×+/⍺⍺⍤0⊢x
     }
+
+    tanh_sinh←{
+        int←{
+            (pf m2)←↓(○.5)×5 6∘.○⍵⍵×⍳÷⍵⍵
+            (xk wkd)←↓7 6∘.○pf
+            +/((⍵⍵×m2)÷×⍨wkd)×⍺⍺¨xk
+        }
+        ⍺>⍵:-⍵(⍺⍺∇∇⍵⍵)⍺
+        ⍺ ⍵≡0 1:⍺(⍺⍺ int ⍵⍵)⍵
+        a b←⍺ ⍵⋄g←⍺⍺
+        (b-a)×0({g a+⍵×b-a} int ⍵⍵)1
+    }
 :EndNamespace
