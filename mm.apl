@@ -97,6 +97,7 @@
         sgn×+/0.5×int_prec×+/⍺⍺⍤0⊢x
     }
 
+    ⍝ The tanh-sinh quadrature.
     tanh_sinh←{
         int←{
             (pf m2)←↓(○.5)×5 6∘.○⍵⍵×⍳÷⍵⍵
