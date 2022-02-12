@@ -156,5 +156,5 @@
     pderv_b←{epsilon÷⍨-/(⍺⍺ invariant_a ⍺)¨⍵+epsilon 0} ⍝ Partial derivative df/d⍵
 
     ⍝ The digamma function.
-    digamma←{!⍵-1}derv÷{!⍵-1}
+    digamma←(!¯1∘+)derv÷(!¯1∘+)
 :EndNamespace
