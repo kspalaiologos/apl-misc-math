@@ -137,4 +137,8 @@
 
     ⍝ The error function.
     erf←{_erf_c×0(*∘-×⍨)simpson⍵}
+
+    ⍝ The sine integrals.
+    Si←{0 (1∘○÷⊢)simpson ⍵}
+    si←{}
 :EndNamespace
