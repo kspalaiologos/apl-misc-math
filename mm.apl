@@ -45,4 +45,37 @@
             v←,1↑⍵⋄g{⍺-⍵÷×/0~⍨⍺-v}⌿⍵
         }⍣⍺ g 0.4J0.9*⎕io-⍨⍳1-⍨≢⍵
     }
+
+    ⍝ The Faddeev-LeVerrier algorithm for finding the characteristic
+    ⍝ polynomial of a square matrix.
+    faddeev_leverrier←{
+        ⎕io←0⋄(≠/⍴⍵)∨2≠≢⍴⍵:⍬⋄n←≢⍵
+        M0←⍵⋄I←n n⍴1↑⍨1+n⋄⊃ {
+            ⍵=0:1 I⋄(cp MP)←∇⍵-1⋄X←M0+.×MP
+            c←(+/0 0⍉X)÷-⍵⋄(cp,c)(X+I×c)
+        } n
+    }
+
+    ⍝ An extension to the Faddeev-LeVerrier implementation above that
+    ⍝ also keeps track of the matrix used to compute the inverse.
+    ⍝ The inverse can be obtained using inv cpoly←... and inv×-÷⊃⌽cpoly
+    faddeev_leverrier←{
+        ⎕io←0⋄(≠/⍴⍵)∨2≠≢⍴⍵:⍬⋄n←≢⍵⋄inv←⍬
+        M0←⍵⋄I←n n⍴1↑⍨1+n⋄cpoly←⊃ {
+            ⍵=0:1 I⋄(cp MP)←∇⍵-1⋄X←M0+.×MP
+            c←(+/0 0⍉X)÷-⍵
+            MC←X+I×c
+            _←{⍵=n-1:inv∘←MC⋄0}⍵
+            (cp,c)MC
+        } n
+        inv cpoly
+    }
+
+    ⍝ Eigenvector computation.
+    eigenvec←{
+        ⎕io←0⋄(≠/⍴⍵)∨2≠≢⍴⍵:⍬
+        n←≢⍵⋄I←n n⍴1↑⍨1+n⋄s←⍵-⍺×I
+        N←{¯9 ¯11+.○(⊢×⎕ct<|)9 11∘.○⍵}
+        q←1,⍨1↑⍨1-⍨⊃⌽⍴s⋄N¨1,⍨∊⌹⍨∘-/q⊂1↓s
+    }
 :EndNamespace
