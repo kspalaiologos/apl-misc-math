@@ -157,4 +157,7 @@
 
     ⍝ The digamma function.
     digamma←(!¯1∘+)derv÷(!¯1∘+)
+
+    ⍝ Gradient vector.
+    nabla_grad←{⍺(⍺⍺ mm.pderv_a,⍺⍺ mm.pderv_b)⍵}
 :EndNamespace
