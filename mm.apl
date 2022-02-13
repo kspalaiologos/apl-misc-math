@@ -159,5 +159,5 @@
     digamma←(!¯1∘+)derv÷(!¯1∘+)
 
     ⍝ Gradient vector.
-    nabla_grad←{⍺(⍺⍺ mm.pderv_a,⍺⍺ mm.pderv_b)⍵}
+    nabla_grad←{⍺(⍺⍺ pderv_a,⍺⍺ pderv_b)⍵}
 :EndNamespace
